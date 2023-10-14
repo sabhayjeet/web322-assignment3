@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css" />
+    <title>Lego Collection</title>
+</head>
+
+<body>
+    <nav>
+        <div class="container mx-auto">
+            <div class="flex items-center justify-between p-4">
+                <a href="/" class="text-2xl font-bold">Lego Collection</a>
+                <ul class="flex space-x-4">
+                    <li><a href="/Home">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li class="relative group">
+                        <a href="#" class="group-hover:underline">Theme</a>
+                        <ul class="hidden absolute space-y-1 bg-white group-hover:block">
+                            <li><a href="/lego/sets?theme=Theme1">Theme1</a></li>
+                            <li><a href="/lego/sets?theme=Theme2">Theme2</a></li>
+                            <li><a href="/lego/sets?theme=Theme3">Theme3</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container mx-auto mt-8">
+        <!-- Hero Component -->
+        <div class="bg-blue-200 p-4 rounded-lg">
+            <h1 class="text-3xl font-semibold">Explore the Lego Collection</h1>
+            <a href="/lego/sets" class="btn mt-2">Get Started</a>
+        </div>
+        <!-- Responsive Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-8" id="legoSetsContainer">
+            <!-- Generate Card Components for Lego Sets -->
+        </div>
+    </div>
+
+    <script>
+        fetch('/lego/sets')  // Replace with the actual path to your JSON file
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); 
+                const legoSetsContainer = document.getElementById('legoSetsContainer');
+    
+                data.forEach(set => {
+                    const setCard = `
+                        <div class="bg-white p-4 rounded-lg shadow-md">
+                            <img src="${set.img_url}" alt="Lego Set ${set.set_num}">
+                            <h2 class="text-xl font-semibold mt-2">${set.name}</h2>
+                            <p class="text-gray-600">A classic Lego set from ${set.year} with ${set.num_parts} parts.</p>
+                            <a href="/lego/sets/${set.set_num}" class="btn mt-2">View Details</a>
+                        </div>
+                    `;
+                    legoSetsContainer.insertAdjacentHTML('beforeend', setCard);
+                });
+            })
+            .catch(error => console.error('Error loading data: ' + error));
+    </script>
+
+
+
+</body>
+
+</html>
